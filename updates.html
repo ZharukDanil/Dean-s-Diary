@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>История обновлений – Dean's Diary</title>
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+        /* Плавное появление текста */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .fade-in:nth-child(2) { animation-delay: 0.1s; }
+        .fade-in:nth-child(3) { animation-delay: 0.2s; }
+        .fade-in:nth-child(4) { animation-delay: 0.3s; }
+        .fade-in:nth-child(5) { animation-delay: 0.4s; }
+        .fade-in:nth-child(6) { animation-delay: 0.5s; }
+        .fade-in:nth-child(7) { animation-delay: 0.6s; }
+        .fade-in:nth-child(8) { animation-delay: 0.7s; }
+        .fade-in:nth-child(9) { animation-delay: 0.8s; }
+        .fade-in:nth-child(10) { animation-delay: 0.9s; }
+        .fade-in:nth-child(11) { animation-delay: 1s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="falling-emojis"></div>
+
+    <header>
+        <div class="nav-container">
+            <img src="Images/Image_1.jpg" alt="Dean's Diary Logo" class="logo" />
+            <div class="title-block">
+                <h1 class="fancy-title">Dean's Diary</h1>
+                <p class="subtitle">Stories that stay with you.</p>
+                <a href="index.html" class="read-btn">🏠 На главную</a>
+                <a href="locations_page.html" class="read-btn">Локации 🗺️</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="about-section">
+        <div class="about-content">
+            <h2><span class="icon">🗓️</span> История обновлений</h2>
+
+            <p class="fade-in">📖 <b>29.10.2024</b> — Добавлена книга «На грани света».</p>
+            <p class="fade-in">📖 <b>20.01.2025</b> — Добавлена книга «Красным по белому».</p>
+            <p class="fade-in">📖 <b>14.03.2025</b> — Добавлена книга «Весенний свет».</p>
+            <p class="fade-in">📖 <b>05.04.2025</b> — Добавлена книга «Стертая реальность».</p>
+            <p class="fade-in">📖 <b>23.05.2025</b> — Добавлена книга «Стертая реальность 2».</p>
+            <p class="fade-in">🗺️ <b>24.05.2025</b> — Добавлена страница «Локации».</p>
+            <p class="fade-in">📖 <b>20.07.2025</b> — Добавлена книга «Легенда Багряного Леса».</p>
+            <p class="fade-in">🖼️ <b>02.07.2025</b> — Обновлён дизайн карточек всех книг с улучшенным качеством изображений.</p>
+            <p class="fade-in">🎲 <b>10.08.2025</b> — Появилась кнопка «Случайная книга» для случайного выбора истории.</p>
+            <p class="fade-in">📂 <b>10.08.2025</b> — Реализовано сайдбар-меню с поиском книг и быстрым доступом к основным функциям.</p>
+        </div>
+    </main>
+
+    <footer>
+        <div class="social-links">
+            <a href="https://web.telegram.org/a/#-1002443108394" target="_blank">
+                <img src="Images/Telegram.png" alt="Telegram" />
+                Telegram
+            </a>
+            <a href="mailto:danil.qerew@gmail.com">
+                <img src="Images/Email.png" alt="Email" />
+                Email
+            </a>
+        </div>
+        <p class="footer-copy">© 2025 Dean's Diary</p>
+        <a href="#" class="back-to-top">↑ Back to Top</a>
+    </footer>
+
+    <script>
+        window.addEventListener('load', () => {
+            document.body.classList.add('loaded');
+        });
+
+        const emojiList = ['🍂', '📖', '✨', '🍁', '📔', '📄', '📝'];
+        const container = document.querySelector('.falling-emojis');
+
+        for (let i = 0; i < 25; i++) {
+            const emoji = document.createElement('span');
+            emoji.innerText = emojiList[Math.floor(Math.random() * emojiList.length)];
+            emoji.style.left = `${Math.random() * 100}vw`;
+            emoji.style.animationDuration = `${5 + Math.random() * 10}s`;
+            emoji.style.fontSize = `${18 + Math.random() * 24}px`;
+            container.appendChild(emoji);
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dean's Diary - Locations</title>
+  <style>
+    /* === Основные стили === */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #3b2e2a, #594b43);
+      color: #f5f1eb;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+      opacity: 0;
+      transition: opacity 0.6s ease-in;
+    }
+
+    body.loaded {
+      opacity: 1;
+    }
+
+    .falling-emojis span {
+      position: fixed;
+      top: -5%;
+      font-size: 24px;
+      opacity: 0.2;
+      animation: fall linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-10vh) rotate(0deg);
+      }
+
+      100% {
+        transform: translateY(110vh) rotate(360deg);
+      }
+    }
+
+    /* === Хедер === */
+    header {
+      text-align: center;
+      padding: 40px 20px;
+      background: linear-gradient(to right, #4e362b, #2b1f1a);
+      color: #f5f1eb;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+
+    .logo {
+      max-width: 120px;
+      margin-bottom: 15px;
+      border-radius: 16px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+      transition: transform 0.5s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.05) rotate(-2deg);
+    }
+
+    .nav-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 20px;
+      position: relative;
+      border-radius: 16px;
+      z-index: 2;
+    }
+
+    .nav-container::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('Images/texture.png') center/cover no-repeat;
+      opacity: 0.5;
+      border-radius: 16px;
+      z-index: -1;
+    }
+
+    .fancy-title {
+      font-family: 'Georgia', serif;
+      font-size: 3rem;
+      color: #f5f1eb;
+      text-shadow: 2px 2px #4a2e2e;
+      margin: 10px 0 5px;
+      position: relative;
+    }
+
+    .fancy-title::after {
+      content: "✒️";
+      position: absolute;
+      right: -30px;
+      top: 0;
+      font-size: 1.5rem;
+    }
+
+    .subtitle {
+      font-size: 1.4rem;
+      color: #ffdca8;
+      font-weight: bold;
+      text-transform: uppercase;
+      background: linear-gradient(to right, #ff7a7a, #ff9a9a);
+      -webkit-background-clip: text;
+      color: transparent;
+      animation: subtitleAnimation 2s ease-in-out;
+      text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
+      margin-top: 10px;
+    }
+
+    @keyframes subtitleAnimation {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .read-btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #ffdca8;
+      color: #4a2e2e;
+      text-decoration: none;
+      border-radius: 20px;
+      font-weight: bold;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .read-btn:hover {
+      background-color: #ffdca8;
+      transform: scale(1.05);
+    }
+
+    /* === Локации === */
+    .locations-title {
+      text-align: center;
+      margin: 40px 0 20px;
+      color: #ffdca8;
+      font-size: 2.5rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .location-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      padding: 20px 20px 50px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .location-card {
+      background: #4a3a32;
+      width: 340px;
+      min-height: 460px;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+      text-align: center;
+      padding: 20px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: cardAppear 0.5s forwards;
+    }
+
+    @keyframes cardAppear {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .location-card:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    .location-card:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .location-card:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    .location-card:nth-child(4) {
+      animation-delay: 0.4s;
+    }
+
+    .location-card:nth-child(5) {
+      animation-delay: 0.5s;
+    }
+
+    .location-card:nth-child(6) {
+      animation-delay: 0.6s;
+    }
+
+    .location-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+    }
+
+    .location-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      transition: transform 0.3s ease;
+    }
+
+    .location-card img:hover {
+      transform: scale(1.05) rotate(1deg);
+    }
+
+    .location-card h2 {
+      font-size: 22px;
+      color: #ffdca8;
+      margin: 10px 0;
+    }
+
+    .location-card p {
+      font-size: 15px;
+      color: #f3f1ec;
+      margin-bottom: 15px;
+      line-height: 1.5;
+    }
+
+    .location-card .tag {
+      display: inline-block;
+      background: rgba(255, 220, 168, 0.2);
+      color: #ffdca8;
+      padding: 5px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      margin: 5px 3px;
+    }
+
+    .location-btn {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 8px 16px;
+      background: #ffdca8;
+      color: #4a2e2e;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    .location-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .category-filters {
+      text-align: center;
+      margin: 20px 0 30px;
+    }
+
+    .filter-btn {
+      background: rgba(255, 220, 168, 0.2);
+      color: #ffdca8;
+      border: 1px solid #ffdca8;
+      padding: 8px 15px;
+      margin: 0 5px 10px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: #ffdca8;
+      color: #4a2e2e;
+    }
+
+    /* === Футер === */
+    footer {
+      background: #2b1f1a;
+      text-align: center;
+      padding: 40px 20px;
+      color: #f5f1eb;
+      font-size: 14px;
+      box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.3);
+      position: relative;
+      z-index: 2;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .social-links {
+      margin-bottom: 10px;
+    }
+
+    .social-links a {
+      margin: 0 10px;
+      color: #ffdca8;
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: text-shadow 0.3s ease;
+    }
+
+    .social-links a img {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #fff;
+      padding: 2px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .social-links a:hover {
+      text-shadow: 0 0 5px #ffdca8;
+    }
+
+    .social-links a:hover img {
+      transform: scale(1.1);
+      box-shadow: 0 0 6px rgba(255, 220, 168, 0.7);
+    }
+
+    .footer-copy {
+      font-size: 13px;
+      color: #d6c5b8;
+      opacity: 0.7;
+      margin-top: 5px;
+    }
+
+    .back-to-top {
+      display: inline-block;
+      margin-top: 15px;
+      color: #ffdca8;
+      font-size: 13px;
+      text-decoration: none;
+      transition: text-shadow 0.3s ease;
+    }
+
+    .back-to-top:hover {
+      text-shadow: 0 0 5px #fff;
+    }
+
+    /* Адаптивность */
+    @media (max-width: 768px) {
+      .location-grid {
+        gap: 20px;
+      }
+
+      .location-card {
+        width: 100%;
+        max-width: 340px;
+      }
+
+      .fancy-title {
+        font-size: 2.5rem;
+      }
+
+      .subtitle {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="falling-emojis"></div>
+
+  <header>
+    <div class="nav-container">
+      <img src="Images/Image_1.jpg" alt="Dean's Diary Logo" class="logo" />
+      <div class="title-block">
+        <h1 class="fancy-title">Dean's Diary</h1>
+        <p class="subtitle">Stories that stay with you.</p>
+        <a href="index.html" class="read-btn">Главная 📚</a>
+        <a href="about.html" class="read-btn">О проекте 🔍</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="locations-title">Локации из историй</h1>
+
+    <div class="category-filters">
+      <button class="filter-btn active" data-filter="all">Все локации</button>
+      <button class="filter-btn" data-filter="real">Реальные места</button>
+      <button class="filter-btn" data-filter="fiction">Выдуманные места</button>
+      <button class="filter-btn" data-filter="city">Городские</button>
+      <button class="filter-btn" data-filter="nature">Природа</button>
+    </div>
+
+    <div class="location-grid">
+      <!-- Локация 1 -->
+      <div class="location-card" data-categories="fiction">
+        <img src="images/Citadel.png" alt="Цитадель" />
+        <h2>Цитадель</h2>
+        <p>Таинственное сооружение из "Стертой реальности 2", где оказались главные герои.
+          Странное место, отрезанное от внешнего мира.</p>
+        <div>
+          <span class="tag">Выдуманное место</span>
+          <span class="tag">Замкнутое пространство</span>
+        </div>
+        <a href="Files_pdf/Citadel_location.pdf" target="_blank" class="read-btn">Подробнее 📌</a>
+      </div>
+
+      <!-- Локация 2 -->
+      <div class="location-card" data-categories="fiction city">
+        <img src="images/KNOXBURG CITY.png" alt="Мёртвый город" />
+        <h2>Мёртвый город Ноксбург</h2>
+        <p>Заброшенный город из первой части "Стертой реальности". Место, где остановилось время и скрываются мрачные
+          тайны.</p>
+        <div>
+          <span class="tag">Выдуманное место</span>
+          <span class="tag">Постапокалипсис</span>
+        </div>
+        <a href="Files_pdf/Knoxburg_city.pdf" target="_blank" class="read-btn">Подробнее 📌</a>
+      </div>
+
+      <!-- Локация 3 -->
+      <div class="location-card" data-categories="real nature">
+        <img src="images/Spring Park.png" alt="Весенний парк" />
+        <h2>Весенний парк</h2>
+        <p>Место раздумий и важных решений из "Весеннего света". Здесь герой нашел свое спокойствие среди цветущих
+          деревьев.</p>
+        <div>
+          <span class="tag">Реальное место</span>
+          <span class="tag">Природа</span>
+        </div>
+        <a href="Files_pdf/Spring Park.pdf" target="_blank" class="read-btn">Подробнее 📌</a>
+      </div>
+
+      <!-- Локация 4 -->
+      <div class="location-card" data-categories="fiction nature">
+        <img src="images/Crimson Forest.png" alt="Багряный Лес" />
+        <h2>Багряный Лес</h2>
+        <p>Жуткий багряный лес. Скрученные деревья, алый туман и зловещая тишина превращают это место в границу между
+          сном и кошмаром</p>
+        <div>
+          <span class="tag">Выдуманное место</span>
+          <span class="tag">Природа</span>
+        </div>
+        <a href="Files_pdf/Crimson Forest.pdf" target="_blank" class="read-btn">Подробнее 📌</a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="social-links">
+      <a href="https://web.telegram.org/a/#-1002443108394" target="_blank">
+        <img src="Images/Telegram.png" alt="Telegram" />
+        Telegram
+      </a>
+      <a href="mailto:danil.qerew@gmail.com">
+        <img src="Images/Email.png" alt="Email" />
+        Email
+      </a>
+    </div>
+    <p class="footer-copy">© 2025 Dean's Diary</p>
+    <a href="#" class="back-to-top">↑ Back to Top</a>
+  </footer>
+
+  <!-- Скрипт: падающие эмодзи -->
+  <script>
+    const emojiList = ['🍂', '📖', '✨', '🍁', '📔', '📄', '📝', '🗺️', '🧭', '🏞️'];
+    const container = document.querySelector('.falling-emojis');
+
+    for (let i = 0; i < 25; i++) {
+      const emoji = document.createElement('span');
+      emoji.innerText = emojiList[Math.floor(Math.random() * emojiList.length)];
+      emoji.style.left = `${Math.random() * 100}vw`;
+      emoji.style.animationDuration = `${5 + Math.random() * 10}s`;
+      emoji.style.fontSize = `${18 + Math.random() * 24}px`;
+      container.appendChild(emoji);
+    }
+  </script>
+
+  <!-- Скрипт: фильтрация категорий -->
+  <script>
+    // Добавляем событие загрузки
+    window.addEventListener('load', () => {
+      document.body.classList.add('loaded');
+
+      // Находим все кнопки фильтров и карточки локаций
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      const locationCards = document.querySelectorAll('.location-card');
+
+      // Добавляем обработчик события клика для кнопок фильтров
+      filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          // Удаляем active у всех кнопок и добавляем active для текущей кнопки
+          filterButtons.forEach(btn => btn.classList.remove('active'));
+          button.classList.add('active');
+
+          // Получаем значение фильтра
+          const filterValue = button.getAttribute('data-filter');
+
+          // Фильтруем карточки
+          locationCards.forEach(card => {
+            // Скрываем карточку с анимацией
+            card.classList.add('fade-out');
+
+            // После завершения анимации скрытия...
+            setTimeout(() => {
+              // Проверяем, соответствует ли карточка выбранному фильтру
+              const categories = card.getAttribute('data-categories');
+
+              if (filterValue === 'all' || categories.includes(filterValue)) {
+                // Если это "все локации" или категория совпадает, показываем карточку
+                card.style.display = 'block';
+                // После короткой задержки добавляем анимацию появления
+                setTimeout(() => {
+                  card.classList.remove('fade-out');
+                }, 10);
+              } else {
+                // Иначе скрываем карточку
+                card.style.display = 'none';
+              }
+            }, 300); // Длительность анимации исчезновения
+          });
+        });
+      });
+    });
+  </script>
+
+  <script>
+    // Плавная прокрутка для Back to Top
+    document.querySelector('.back-to-top').addEventListener('click', function (e) {
+      e.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  </script>
+</body>
+
+</html>
